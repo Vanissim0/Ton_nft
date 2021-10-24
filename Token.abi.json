@@ -1,0 +1,45 @@
+{
+	"ABI version": 2,
+	"version": "2.1",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "createToken",
+			"inputs": [
+				{"name":"car","type":"string"},
+				{"name":"length","type":"uint256"},
+				{"name":"weight","type":"uint256"},
+				{"name":"power","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "exposTokenOnSail",
+			"inputs": [
+				{"name":"price","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"components":[{"name":"car","type":"string"},{"name":"length","type":"uint256"},{"name":"weight","type":"uint256"},{"name":"power","type":"uint256"}],"name":"tokensArr","type":"tuple[]"},
+		{"name":"TokenToOwner","type":"map(uint256,uint256)"}
+	]
+}
