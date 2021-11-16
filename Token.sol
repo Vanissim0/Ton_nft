@@ -4,36 +4,56 @@ pragma AbiHeader expire;
 contract TokenContract {
 
     struct Token {
-        string car;
+        string name;
         uint length;
         uint weight;
         uint power;
     }
 
-    Token[] tokensArr;
-
-    mapping (uint => uint) TokenToOwner;
-
-    function createToken(string car, uint length, uint weight, uint power) public { //checkNamesOfToken
-        tvm.accept();
-        tokensArr.push(Token(car, length, weight, power));
-        uint keyAsLastNum = tokensArr.length - 1;
-        TokenToOwner[keyAsLastNum] = msg.pubkey();
+    struct TokensOnSail {
+        string name;
+        uint price;
+        bool sale;
     }
 
-    // modifier checkNamesOfToken(string car) {
-    //     // require(Token(car) != tokensArr(Token[car]));
-    //     _;
-    // }
+    Token[] tokensArr;
+    TokensOnSail[] saleArr;
 
-    modifier checkOwner {
-        require(msg.pubkey() == tvm.pubkey(), 100);
+    mapping (uint => uint) TokenToOwner;
+    mapping (uint => uint) TokenToPrice;
+
+    function createToken(string name, uint length, uint weight, uint power, uint price) public {
+        tvm.accept();
+        for(uint i=0; i < tokensArr.length; i++){
+            if (tokensArr[i].name == name) {
+                require;
+            }
+        }
+        tokensArr.push(Token(name, length, weight, power));
+        uint keyAsLastNum = tokensArr.length - 1;
+        TokenToOwner[keyAsLastNum] = msg.pubkey();
+        TokenToOwner[keyAsLastNum] = price;
+    }
+
+    modifier checkOwner(uint tokenId) {
+        require(msg.pubkey() == TokenToOwner[tokenId], 101);
         _;
     }
 
-    function exposTokenOnSail(uint price) public pure checkOwner returns(uint){
+    function givePriceToken(uint tokenId, uint price) public checkOwner(tokenId) {
+        saleArr[tokenId].sale = true;
+        saleArr[tokenId].price = price;
+    }
+
+    function getTokenOwner(uint tokenId) public view returns(uint) {
+        return TokenToOwner[tokenId];
+    }
+
+    function exposTokenOnSail(uint tokenId) public view returns(string tokenName, uint tokenPrice, bool tokenSale) {
         tvm.accept();
-        return price;
+        tokenName = saleArr[tokenId].name;
+        tokenPrice = saleArr[tokenId].price;
+        tokenSale = saleArr[tokenId].sale;
     }
 
     constructor() public {
